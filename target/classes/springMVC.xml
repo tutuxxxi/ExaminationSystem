@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <context:component-scan base-package="com.xxx.controller" />
+
+    <mvc:default-servlet-handler />
+    <mvc:annotation-driven>
+        <!-- 消息转换器 -->
+        <mvc:message-converters register-defaults="true">
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <!--
+                    避免ie浏览器执行异步请求时，返回json出现下载文件的现象
+                -->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=utf-8</value>
+                        <value>text/html;charset=utf-8</value>
+                    </list>
+                </property>
+                <!--下面这个可以控制返回数据的格式-->
+                <property name="features">
+                    <list>
+                        <!--是否输出值为null的字段，默认不转换，添加此属性之后可以转换-->
+                        <value>WriteMapNullValue</value>
+                        <!--当数值属性的值为null时，显示0-->
+                        <value>WriteNullNumberAsZero</value>
+                        <!--当字符串为null时,显示""空字符串-->
+                        <value>WriteNullStringAsEmpty</value>
+                        <!--当Boolean类型为null时，显示false-->
+                        <value>WriteNullBooleanAsFalse</value>
+                        <!--当集合属性为null时，显示[]空数组-->
+                        <value>WriteNullListAsEmpty</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <mvc:resources mapping="/layui/**" location="/layui/"></mvc:resources>
+
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="suffix" value=".jsp"></property>
+        <property name="prefix" value="/WEB-INF/Exam/"></property>
+    </bean>
+
+
+</beans>

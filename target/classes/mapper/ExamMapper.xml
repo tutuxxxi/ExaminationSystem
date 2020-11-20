@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.dao.ExamDao">
+
+    <resultMap id="exam" type="com.xxx.pojo.Exam">
+        <id property="id" column="exam_id"></id>
+        <result column="exam_name" property="name"></result>
+        <result column="exam_startTime" property="startTime"></result>
+        <result property="endTime" column="exam_endTime"></result>
+
+        <collection property="questions" ofType="com.xxx.pojo.Question">
+            <id column="ques_id" property="id"></id>
+            <result property="question" column="ques_question"></result>
+            <result property="choice" column="ques_choice"></result>
+            <result column="ques_answer" property="answer"></result>
+        </collection>
+    </resultMap>
+    
+    
+    <insert id="addExam">
+        <selectKey keyProperty="id" order="BEFORE" resultType="String">
+            select uuid();
+        </selectKey>
+
+        insert into exam_tb
+        values(#{id}, #{name}, #{startTime}, #{endTime})
+    </insert>
+
+
+    <select id="getAllExam" resultMap="exam">
+        select
+            exam.id as `exam_id`,
+            exam.name as `exam_name`,
+            exam.startTime as `exam_startTime`,
+            exam.endTime as `exam_endTime`,
+            ques.id as `ques_id`,
+            ques.question as `ques_question`,
+            ques.choice as `ques_choice`,
+            ques.answer as `ques_answer`
+        from exam_tb exam
+        inner join question_tb ques
+        on exam.id = ques.exam_id
+    </select>
+
+    <select id="getExam" resultMap="exam">
+        select
+            exam.id as `exam_id`,
+            exam.name as `exam_name`,
+            exam.startTime as `exam_startTime`,
+            exam.endTime as `exam_endTime`,
+            ques.id as `ques_id`,
+            ques.question as `ques_question`,
+            ques.choice as `ques_choice`,
+            ques.answer as `ques_answer`
+        from exam_tb exam
+        inner join question_tb ques
+        on exam.id = ques.exam_id
+        where exam.id=#{id}
+    </select>
+</mapper>

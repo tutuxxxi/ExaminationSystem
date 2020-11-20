@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.dao.QuestionDao">
+
+    <resultMap id="question" type="com.xxx.pojo.Question">
+        <id column="id" property="id"></id>
+        <result property="question" column="question"></result>
+        <result column="answer" property="answer"></result>
+        <result column="choice" property="choice"></result>
+    </resultMap>
+
+
+    <insert id="addQuestion">
+        <selectKey resultType="String" order="BEFORE" keyProperty="ques.id">
+            select uuid();
+        </selectKey>
+
+        insert into question_tb
+        values (#{ques.id}, #{ques.question}, #{ques.choice}, #{ques.answer}, #{examId})
+    </insert>
+
+</mapper>
