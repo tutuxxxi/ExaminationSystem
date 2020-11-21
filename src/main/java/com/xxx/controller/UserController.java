@@ -37,7 +37,7 @@ public class UserController {
             if(user.getRole().equals("老师")){
                 return "teacherPage";
             }else{
-                return "studentPage";
+                return "redirect: " + request.getContextPath() + "/exam/listExam";
             }
         }else{
             session.setAttribute("errorInfo", "注册失败，检查表单是否完整，若无法解决请联系管理员!");

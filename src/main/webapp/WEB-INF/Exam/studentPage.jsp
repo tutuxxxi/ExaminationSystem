@@ -60,34 +60,39 @@
                 <%
                     List<Exam> exams = (List<Exam>) session.getAttribute("exams");
                     List<Score> scores = (List<Score>) session.getAttribute("scores");
-                    int mark = -1;
-                    int pageNum = session.getAttribute("pageNum") != null ? (Integer) session.getAttribute("pageNum") : 1;
 
-                    int start = (pageNum - 1) * 5;
-                    int end = (pageNum * 5) > exams.size() ? exams.size() : (pageNum * 5);
 
-                    for(; start < end; start++){
-                        Exam exam = exams.get(start);
-                        out.println("<tr>");
-                        out.println("    <td>" + exam.getName() + "</td>");
-                        out.println("    <td>" + DateUtil.dateToString(exam.getStartTime()) +"</td>");
-                        out.println("    <td>" + DateUtil.dateToString(exam.getEndTime()) +"</td>");
-                        out.println("    <td>" + exam.getSize() + "</td>");
-                        if(scores != null){
-                            for(Score score : scores){
-                                if(score.getExamId().equals(exam.getId()))
-                                    mark = score.getScore();
+                    if(exams != null && scores!= null) {
+
+                        int mark = -1;
+                        int pageNum = session.getAttribute("pageNum") != null ? (Integer) session.getAttribute("pageNum") : 1;
+
+                        int start = (pageNum - 1) * 5;
+                        int end = (pageNum * 5) > exams.size() ? exams.size() : (pageNum * 5);
+
+                        for (; start < end; start++) {
+                            Exam exam = exams.get(start);
+                            out.println("<tr>");
+                            out.println("    <td>" + exam.getName() + "</td>");
+                            out.println("    <td>" + DateUtil.dateToString(exam.getStartTime()) + "</td>");
+                            out.println("    <td>" + DateUtil.dateToString(exam.getEndTime()) + "</td>");
+                            out.println("    <td>" + exam.getSize() + "</td>");
+                            if (scores != null) {
+                                for (Score score : scores) {
+                                    if (score.getExamId().equals(exam.getId()))
+                                        mark = score.getScore();
+                                }
+                                if (mark != -1) {
+                                    out.println("<td>得分：" + mark + "</td>");
+                                    mark = -1;
+                                } else {
+                                    out.println("    <td><a href=\"" + request.getContextPath() + "/exam/startExam?id=" + exam.getId() + "\" class=\"layui-btn layui-btn-normal\">开始作答</a></td>");
+                                }
+                            } else {
+                                out.println("    <td><a href=\"" + request.getContextPath() + "/exam/startExam?id=" + exam.getId() + "\" class=\"layui-btn layui-btn-normal\">开始作答</a></td>");
                             }
-                            if(mark != -1){
-                                out.println("<td>得分：" + mark + "</td>");
-                                mark = -1;
-                            }else{
-                                out.println("    <td><a href=\""+ request.getContextPath() +"/exam/startExam?id=" + exam.getId() + "\" class=\"layui-btn layui-btn-normal\">开始作答</a></td>");
-                            }
-                        }else{
-                            out.println("    <td><a href=\""+ request.getContextPath() +"/exam/startExam?id=" + exam.getId() + "\" class=\"layui-btn layui-btn-normal\">开始作答</a></td>");
+                            out.println("<tr>");
                         }
-                        out.println("<tr>");
                     }
                 %>
                 </tbody>
