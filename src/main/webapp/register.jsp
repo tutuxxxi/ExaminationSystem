@@ -3,13 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
 <html>
 <head>
-    <title>Title</title>
+    <title>注册账号</title>
     <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
 </head>
 <body>
 
-    <div style="width: 100%; margin-top: 150px; text-align:center">
-        <div style="margin: 0 auto; width: 40%" >
+    <div style="width: 100%; margin-top: 50px; text-align:center">
+        <h2>简化版在线答题系统 - 注册界面</h2>
+        <div style="border: #2D93CA 2px solid; width: 60%; margin: 50px auto; padding: 80px 30px;" >
             <form class="layui-form" action="user/register" method="post" >
                 <div class="layui-form-item">
                     <label class="layui-form-label">用户名</label>
@@ -74,6 +75,8 @@
             var layer = layui.layer
                 ,form = layui.form;
         });
+
+
     </script>
 <%
     String errorInfo = (String) session.getAttribute("errorInfo");

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xxx.dao.ScoreDao">
+
+    <resultMap id="score" type="com.xxx.pojo.Score">
+        <result property="userId" column="user_id"></result>
+        <result column="exam_id" property="examId"></result>
+        <result property="score" column="score"></result>
+    </resultMap>
+
+
+    <insert id="addScore" >
+        insert into score_tb
+        values (#{userId}, #{examId}, #{score})
+    </insert>
+
+    <select id="getScoreByUserId" resultMap="score">
+        select *
+        from score_tb
+        where user_id=#{id}
+    </select>
+
+    <select id="getScoreByExamId" resultMap="score">
+        select *
+        from score_tb
+        where exam_id=#{id}
+    </select>
+
+</mapper>

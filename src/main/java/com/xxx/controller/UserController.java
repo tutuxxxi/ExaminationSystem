@@ -79,4 +79,5 @@ public class UserController {
         request.getSession().invalidate();
         return "redirect:/login.jsp";
     }
+
 }

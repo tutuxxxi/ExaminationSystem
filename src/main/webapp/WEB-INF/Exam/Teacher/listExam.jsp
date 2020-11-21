@@ -32,9 +32,6 @@
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="${url}/exam/listExam">查看已有试卷</a>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">查看成绩</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -73,7 +70,7 @@
                             out.println("    <td>" + DateUtil.dateToString(exam.getStartTime()) +"</td>");
                             out.println("    <td>" + DateUtil.dateToString(exam.getEndTime()) +"</td>");
                             out.println("    <td>" + exam.getSize() + "</td>");
-                            out.println("    <td><a href=\"\" class=\"layui-btn layui-btn-normal\">查看详情</a></td>");
+                            out.println("    <td><a href=\""+ request.getContextPath() +"/score/listScore?id="+ exam.getId() +"\" class=\"layui-btn layui-btn-normal\">查看成绩</a></td>");
                             out.println("<tr>");
                         }
                     %>

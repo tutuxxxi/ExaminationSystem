@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>考试系统 - 查看试卷</title>
+    <title>考试系统 - 考试中</title>
     <link rel="stylesheet" href="${url}/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
@@ -31,10 +31,10 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item">
-                    <a href="${url}/exam/listExam" disabled>查看我的试卷</a>
+                    查看我的试卷
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;" disabled>查看我的成绩</a>
+                    查看我的成绩
                 </li>
             </ul>
         </div>
@@ -42,55 +42,65 @@
 
     <div class="layui-body">
         <div style="width: 60%; margin: 100px auto; ">
-            <form class="layui-form" action="${url}/exam/endExam" method="post">
-                <%
-                    Exam exam = (Exam) session.getAttribute("exam");
+            <jstl:if test="${exam == null}">
+                <div style="text-align: center; font-size: 30px">
+                    <p>您提交的答案是：${studentAnswer}</p><br>
+                    <p>正确答案是：${answer}</p><br>
+                    <p>您的得分是：${score}</p><br><br>
+                    <a href="${url}/exam/listExam" class="layui-btn layui-btn-normal">返回主页面</a>
+                </div>
+            </jstl:if>
+            <jstl:if test="${exam != null}">
+                <form class="layui-form" action="${url}/exam/endExam" method="post">
+                    <%
+                        Exam exam = (Exam) session.getAttribute("exam");
 
-                    User user = (User) session.getAttribute("userInfo");
+                        User user = (User) session.getAttribute("userInfo");
 
-                    out.println("<p style=\"text-align: center\">你好: " + user.getName() + " -------- 您正在做: " + exam.getName() + "</p>");
-                    out.println("<hr class=\"layui-bg-cyan\">");
+                        out.println("<p style=\"text-align: center\">你好: " + user.getName() + " -------- 您正在做: " + exam.getName() + "</p>");
+                        out.println("<hr class=\"layui-bg-cyan\">");
 
 
-                    List<Question> questions = exam.getQuestions();
+                        List<Question> questions = exam.getQuestions();
 
-                    for(Question question : questions){
+                        for(Question question : questions){
 
-                        out.println("<br><br>");
-                        out.println("<p style=\"font-size; 30px;\">" + question.getQuestion() + "</p>");
-                        out.println("<hr>");
-                        out.println("<br>");
-                        out.println("<div class=\"layui-form-item\">\n" +
-                                "                    <div class=\"layui-input-inline\">");
+                            out.println("<br><br>");
+                            out.println("<p style=\"font-size; 30px;\">" + question.getQuestion() + "</p>");
+                            out.println("<hr>");
+                            out.println("<br>");
+                            out.println("<div class=\"layui-form-item\">\n" +
+                                    "                    <div class=\"layui-input-inline\">");
 
-                        char[] chars = {'A', 'B', 'C', 'D'};
-                        String[] strs = question.getChoice().split("#;");
-                        for(int i = 0; i < 4 ;i++){
-                            out.println("<input type=\"radio\" name=\""+ question.getId() +"\" value=\"" + chars[i]  + "\" title=\"" + chars[i] + "、" + strs[i] + "\">");
+                            char[] chars = {'A', 'B', 'C', 'D'};
+                            String[] strs = question.getChoice().split("#;");
+                            for(int i = 0; i < 4 ;i++){
+                                out.println("<input type=\"radio\" name=\""+ question.getId() +"\" value=\"" + chars[i]  + "\" title=\"" + chars[i] + "、" + strs[i] + "\">");
+                            }
+
+
+                            out.println("</div>\n" +
+                                    "     </div>" +
+                                    "<br><br>");
                         }
 
+                    %>
 
-                        out.println("</div>\n" +
-                            "     </div>" +
-                         "<br><br>");
-                    }
-
-                %>
-
-<%--                <div class="layui-form-item">--%>
-<%--                    <div class="layui-input-inline">--%>
-<%--                        <input type="radio" name="sex" value="男" title="男">--%>
-<%--                        <input type="radio" name="sex" value="女" title="女">--%>
-<%--                    </div>--%>
-<%--                </div>--%>
+                        <%--                <div class="layui-form-item">--%>
+                        <%--                    <div class="layui-input-inline">--%>
+                        <%--                        <input type="radio" name="sex" value="男" title="男">--%>
+                        <%--                        <input type="radio" name="sex" value="女" title="女">--%>
+                        <%--                    </div>--%>
+                        <%--                </div>--%>
 
 
-                <div class="layui-form-item">
-                    <div class="layui-input-inline">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo" style="width: 200px;">交卷</button>
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo" style="width: 200px;">交卷</button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </jstl:if>
         </div>
     </div>
 

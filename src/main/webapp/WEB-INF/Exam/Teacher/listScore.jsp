@@ -1,6 +1,7 @@
 <%@ page import="com.xxx.util.DateUtil" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.xxx.pojo.Exam" %>
+<%@ page import="com.xxx.pojo.User" %>
 <%@ page import="com.xxx.pojo.Score" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
@@ -8,13 +9,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>考试系统 - 主页面</title>
+    <title>考试系统 - 查看成绩</title>
     <link rel="stylesheet" href="${url}/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">考试系统 - 学生端</div>
+        <div class="layui-logo">考试系统 - 老师端</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 ${userInfo.name}
@@ -27,11 +28,11 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="${url}/exam/listExam">查看我的试卷</a>
+                <li class="layui-nav-item">
+                    <a href="${url}/exam/addExam">添加试卷</a>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="${url}/score/listScore">查看我的成绩</a>
+                    <a href="${url}/exam/listExam">查看已有试卷</a>
                 </li>
             </ul>
         </div>
@@ -49,51 +50,33 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>试卷名称</th>
-                    <th>开始时间</th>
-                    <th>结束时间</th>
-                    <th>试题个数</th>
-                    <th></th>
+                    <th>学生名称</th>
+                    <th>学生成绩</th>
                 </tr>
                 </thead>
                 <tbody>
                 <%
-                    List<Exam> exams = (List<Exam>) session.getAttribute("exams");
+                    List<User> users = (List<User>) session.getAttribute("students");
                     List<Score> scores = (List<Score>) session.getAttribute("scores");
-                    int mark = -1;
                     int pageNum = (Integer) session.getAttribute("pageNum");
+                    int size = users.size();
 
                     int start = (pageNum - 1) * 5;
-                    int end = (pageNum * 5) > exams.size() ? exams.size() : (pageNum * 5);
+                    int end = (pageNum * 5) > users.size() ? users.size() : (pageNum * 5);
 
                     for(; start < end; start++){
-                        Exam exam = exams.get(start);
+                        User user = users.get(start);
+                        Score score = scores.get(start);
+
                         out.println("<tr>");
-                        out.println("    <td>" + exam.getName() + "</td>");
-                        out.println("    <td>" + DateUtil.dateToString(exam.getStartTime()) +"</td>");
-                        out.println("    <td>" + DateUtil.dateToString(exam.getEndTime()) +"</td>");
-                        out.println("    <td>" + exam.getSize() + "</td>");
-                        if(scores != null){
-                            for(Score score : scores){
-                                if(score.getExamId().equals(exam.getId()))
-                                    mark = score.getScore();
-                            }
-                            if(mark != -1){
-                                out.println("<td>得分：" + mark + "</td>");
-                                mark = -1;
-                            }else{
-                                out.println("    <td><a href=\""+ request.getContextPath() +"/exam/startExam?id=" + exam.getId() + "\" class=\"layui-btn layui-btn-normal\">开始作答</a></td>");
-                            }
-                        }else{
-                            out.println("    <td><a href=\""+ request.getContextPath() +"/exam/startExam?id=" + exam.getId() + "\" class=\"layui-btn layui-btn-normal\">开始作答</a></td>");
-                        }
+                        out.println("    <td>" + user.getName() + "</td>");
+                        out.println("    <td>" + score.getScore() + "</td>");
                         out.println("<tr>");
                     }
                 %>
                 </tbody>
-
             </table>
-            <div id="pageSelector" style="text-align: center;"></div>
+            <div id="pageSelector" style="text-align: center"></div>
         </div>
     </div>
 
@@ -108,7 +91,7 @@
 
         laypage.render({
             elem: 'pageSelector'
-            ,count: <%=exams.size()%>//数据总数
+            ,count: <%=scores.size()%>//数据总数
             ,limit: 5
             ,curr: ${pageNum}//起始页面
             ,groups:3
@@ -116,7 +99,7 @@
             ,next: "<i class='layui-icon layui-icon-next'></i>"
             ,jump: function(obj, first){
                 if(!first){
-                    window.location.href='${url}/exam/listExam?pageNum=' + obj.curr;
+                    window.location.href='${url}/score/listScore?pageNum=' + obj.curr;
                 }
             }
         });

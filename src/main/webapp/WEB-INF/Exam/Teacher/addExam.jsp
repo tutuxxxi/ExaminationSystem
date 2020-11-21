@@ -28,9 +28,6 @@
                 <li class="layui-nav-item">
                     <a href="${url}/exam/listExam">查看已有试卷</a>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">查看成绩</a>
-                </li>
             </ul>
         </div>
     </div>

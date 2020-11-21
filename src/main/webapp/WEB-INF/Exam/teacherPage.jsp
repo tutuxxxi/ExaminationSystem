@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>考试系统 - 考试中</title>
+    <title>考试系统 - 主页面</title>
     <link rel="stylesheet" href="${url}/layui/css/layui.css">
 </head>
 <body class="layui-layout-body">
@@ -27,9 +27,6 @@
                 </li>
                 <li class="layui-nav-item">
                     <a href="${url}/exam/listExam">查看已有试卷</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">查看成绩</a>
                 </li>
             </ul>
         </div>

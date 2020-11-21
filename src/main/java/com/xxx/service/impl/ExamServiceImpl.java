@@ -29,7 +29,13 @@ public class ExamServiceImpl implements ExamService {
     }
 
     public List<Exam> getAllExam() {
-        return examDao.getAllExam();
+        List<Exam> allExam = examDao.getAllExam();
+
+        for(Exam exam : allExam){
+            exam.setSize(exam.getQuestions().size());
+        }
+
+        return allExam;
     }
 
     public Exam getExam(String id) {
