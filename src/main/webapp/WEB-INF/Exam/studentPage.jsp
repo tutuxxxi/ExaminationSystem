@@ -61,7 +61,7 @@
                     List<Exam> exams = (List<Exam>) session.getAttribute("exams");
                     List<Score> scores = (List<Score>) session.getAttribute("scores");
                     int mark = -1;
-                    int pageNum = (Integer) session.getAttribute("pageNum");
+                    int pageNum = session.getAttribute("pageNum") != null ? (Integer) session.getAttribute("pageNum") : 1;
 
                     int start = (pageNum - 1) * 5;
                     int end = (pageNum * 5) > exams.size() ? exams.size() : (pageNum * 5);
